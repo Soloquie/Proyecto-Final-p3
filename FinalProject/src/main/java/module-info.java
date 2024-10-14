@@ -1,6 +1,7 @@
 module uniquindio.finalproject {
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.logging;
 
 
     opens uniquindio.finalproject to javafx.fxml;

@@ -23,7 +23,7 @@ public class Presupuesto {
         this.idPresupuesto = idPresupuesto;
     }
 
-    public String getNombre() {
+    public String getNombrePresupuesto() {
         return nombre;
     }
 
@@ -53,5 +53,17 @@ public class Presupuesto {
 
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
+    }
+
+    public String getNombreCategoria(){
+        return categoria.getNombreCategoria();
+    }
+
+    public String getIdCategoria(){
+        return categoria.getIdCategoria();
+    }
+
+    public String getDescripcionCategoria(){
+        return categoria.getDescripcionCategoria();
     }
 }

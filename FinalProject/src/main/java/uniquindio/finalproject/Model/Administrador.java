@@ -3,23 +3,63 @@ package uniquindio.finalproject.Model;
 import uniquindio.finalproject.Interfaces.GestionUsuarioInterface;
 import uniquindio.finalproject.Interfaces.GestionCuentasInterface;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Administrador implements GestionUsuarioInterface ,GestionCuentasInterface {
+public class Administrador extends Usuario implements GestionUsuarioInterface ,GestionCuentasInterface, Serializable {
     private LinkedList<Usuario> usuarios;
     private LinkedList<Presupuesto> presupuestos;
     private LinkedList<Cuenta> cuentas;
     private LinkedList<Transaccion> transacciones;
     private LinkedList<Categoria> categorias;
 
-    public Administrador() {
+    public void setUsuarios(LinkedList<Usuario> usuarios) {
+        this.usuarios = usuarios;
+    }
+
+    @Override
+    public LinkedList<Presupuesto> getPresupuestos() {
+        return presupuestos;
+    }
+
+    @Override
+    public void setPresupuestos(LinkedList<Presupuesto> presupuestos) {
+        this.presupuestos = presupuestos;
+    }
+
+    public LinkedList<Cuenta> getCuentas() {
+        return cuentas;
+    }
+
+    public void setCuentas(LinkedList<Cuenta> cuentas) {
+        this.cuentas = cuentas;
+    }
+
+
+    @Override
+    public void setTransacciones(LinkedList<Transaccion> transacciones) {
+        this.transacciones = transacciones;
+    }
+
+    public LinkedList<Categoria> getCategorias() {
+        return categorias;
+    }
+
+    public void setCategorias(LinkedList<Categoria> categorias) {
+        this.categorias = categorias;
+    }
+
+    public Administrador(String usuarioID, String nombre, String correo, String numeroTelefono, String direccion, Double saldoTotal, String contraseña) {
+        super(usuarioID, nombre, correo, numeroTelefono, direccion, saldoTotal, contraseña);
         this.usuarios = new LinkedList<>();
         this.presupuestos = new LinkedList<>();
         this.cuentas = new LinkedList<>();
         this.transacciones = new LinkedList<>();
         this.categorias= new LinkedList<>();
     }
+
+
 
     @Override
     public void crearUsuario(Usuario usuario) {
@@ -85,7 +125,7 @@ public class Administrador implements GestionUsuarioInterface ,GestionCuentasInt
     public void mostrarEstadisticas() {
         Map<String, Double> gastosPorCategoria = new HashMap<>();
         for (Transaccion transaccion : transacciones) {
-            String categoria = transaccion.getCategoria().getNombre(); // Asumiendo que Transaccion tiene una categoría
+            String categoria = transaccion.getCategoria().getNombreCategoria(); // Asumiendo que Transaccion tiene una categoría
             gastosPorCategoria.put(categoria, gastosPorCategoria.getOrDefault(categoria, 0.0) + transaccion.getMonto());
         }
         List<Map.Entry<String, Double>> gastosOrdenados = gastosPorCategoria.entrySet()

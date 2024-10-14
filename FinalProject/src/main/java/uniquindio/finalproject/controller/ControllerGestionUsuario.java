@@ -4,23 +4,32 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import uniquindio.finalproject.Model.Administrador;
 import uniquindio.finalproject.Model.Usuario ;
 import uniquindio.finalproject.exceptions.ActualizarUsuarioException;
 import uniquindio.finalproject.exceptions.UsuarioNoSeleccionadoException;
+import uniquindio.finalproject.global.SesionGlobal;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class ControllerGestionUsuario implements Initializable {
-    Administrador admin = new Administrador();
+    public TextField txtBuscar;
     Usuario usuarioSeleccionado;
     private final ObservableList<Usuario> usuarioList = FXCollections.observableArrayList();
 
-
+    @FXML
+    PasswordField txtContraseña;
 
     @FXML
     private Button btnGuardar;
@@ -87,11 +96,10 @@ public class ControllerGestionUsuario implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         listaUsuarios = FXCollections.observableArrayList(
-                new Usuario("1", "Juan Perez", "juan@example.com", "12345", "Calle Falsa 123", 21.0),
-                new Usuario("2", "Maria Lopez", "maria@example.com", "67890", "Avenida Siempre Viva", 21.0),
-                new Usuario("3", "Carlos Sanchez", "carlos@example.com", "11223", "Boulevard Los Olivos", 21.0)
+                SesionGlobal.usuarios.stream()
+                        .filter(usuario -> !usuario.equals(SesionGlobal.admin)) // Filtrar el admin
+                        .collect(Collectors.toList())
         );
-
         colId.setCellValueFactory(new PropertyValueFactory<>("usuarioID"));
         colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         colCorreo.setCellValueFactory(new PropertyValueFactory<>("correo"));
@@ -123,7 +131,7 @@ public class ControllerGestionUsuario implements Initializable {
     void ClickGuardar(ActionEvent event) {
         try {
             if (txtId.getText().isEmpty() || txtNombre.getText().isEmpty() || txtCorreo.getText().isEmpty() ||
-                    txtTelefono.getText().isEmpty() || txtDireccion.getText().isEmpty()) {
+                    txtTelefono.getText().isEmpty() || txtDireccion.getText().isEmpty() || txtSaldo.getText().isEmpty()) {
                 mostrarMensaje("Error", "Error guardado", "Todos los campos deben estar completos antes de guardar.", Alert.AlertType.ERROR);
                 throw new ActualizarUsuarioException("Todos los campos deben estar completos antes de guardar.");
             }
@@ -134,8 +142,9 @@ public class ControllerGestionUsuario implements Initializable {
             String telefono = txtTelefono.getText();
             String direccion = txtDireccion.getText();
             String saldo = txtSaldo.getText();
+            String contraseña = txtContraseña.getText();
 
-            Usuario nuevoUsuario = new Usuario(id, nombre, correo, telefono, direccion, Double.valueOf(saldo));
+            Usuario nuevoUsuario = new Usuario(id, nombre, correo, telefono, direccion, Double.valueOf(saldo), contraseña);
             listaUsuarios.add(nuevoUsuario);
             limpiarCampos();
             mostrarMensaje("Notificacion", "Guardado Correcto", "Se ha guardado al usuario correctamente", Alert.AlertType.INFORMATION);
@@ -154,7 +163,6 @@ public class ControllerGestionUsuario implements Initializable {
     @FXML
     void ClickEliminar(ActionEvent event) {
         try {
-            // Verificar que se haya seleccionado un usuario
             if (usuarioSeleccionado == null) {
                 throw new UsuarioNoSeleccionadoException("Debe seleccionar un usuario para eliminar.");
             }
@@ -243,10 +251,34 @@ public class ControllerGestionUsuario implements Initializable {
     public void clickMostrarEstadisticas(ActionEvent actionEvent) {
     }
 
+    @FXML
     public void ClickPresupuestos(ActionEvent actionEvent) {
+        abrirVista("/uniquindio/finalproject/VistaAdicionDePresupuestos.fxml", actionEvent);
     }
 
+    @FXML
     public void ClickAgregarCuentas(ActionEvent actionEvent) {
+        abrirVista("/uniquindio/finalproject/VistaAdicionDeCuentas.fxml", actionEvent);
+    }
+
+    @FXML
+    public void clickCerrarSesion(ActionEvent event) {
+        abrirVista("/uniquindio/finalproject/VistaLogin.fxml", event);
+    }
+
+    private void abrirVista(String vista, ActionEvent event) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource(vista));
+            Stage newStage = new Stage();
+            newStage.setTitle("Nueva Ventana");
+            newStage.setScene(new Scene(root));
+            newStage.show();
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            currentStage.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
 

@@ -1,8 +1,9 @@
 package uniquindio.finalproject.Model;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 
-public class Usuario {
+public class Usuario implements Serializable {
 
     private String usuarioID;
     private String nombre;
@@ -10,11 +11,33 @@ public class Usuario {
     private String numeroTelefono;
     private String direccion;
     private Double saldoTotal;
+    private String contraseña;
     private LinkedList<Cuenta> cuentasAsociadas;
     private LinkedList<Transaccion> transacciones;
     private LinkedList<Presupuesto> presupuestos;
+    private LinkedList<Categoria> categoriasAsociadas;
 
-    public Usuario(String usuarioID, String nombre, String correo, String numeroTelefono, String direccion, Double saldoTotal) {
+    public String getContraseña() {
+        return contraseña;
+    }
+
+    public void setContraseña(String contraseña) {
+        this.contraseña = contraseña;
+    }
+
+    public void setTransacciones(LinkedList<Transaccion> transacciones) {
+        this.transacciones = transacciones;
+    }
+
+    public LinkedList<Presupuesto> getPresupuestos() {
+        return presupuestos;
+    }
+
+    public void setPresupuestos(LinkedList<Presupuesto> presupuestos) {
+        this.presupuestos = presupuestos;
+    }
+
+    public Usuario(String usuarioID, String nombre, String correo, String numeroTelefono, String direccion, Double saldoTotal, String contraseña) {
         this.usuarioID = usuarioID;
         this.nombre = nombre;
         this.correo = correo;
@@ -24,7 +47,11 @@ public class Usuario {
         this.cuentasAsociadas = new LinkedList<>();
         this.transacciones = new LinkedList<>();
         this.presupuestos = new LinkedList<>();
+        this.contraseña = contraseña;
+        this.categoriasAsociadas = new LinkedList<>();
     }
+
+    public Usuario(){}
 
     public LinkedList<Cuenta> getCuentasAsociadas() {
         return cuentasAsociadas;
@@ -82,7 +109,7 @@ public class Usuario {
         this.direccion = direccion;
     }
 
-    public LinkedList<Transaccion> getTransacciones() {
+    public LinkedList<Transaccion> getTransaccionesAsociadas() {
         return transacciones;
     }
 
@@ -96,4 +123,35 @@ public class Usuario {
 
     public void añadirPresupuesto(Presupuesto presupuesto){ presupuestos.add(presupuesto); }
 
+    public LinkedList<Categoria> getCategoriasAsociadas(){
+        return categoriasAsociadas;
+    }
+
+
+
+    public void añadirCategoria(Categoria categoria){
+        categoriasAsociadas.add(categoria);
+    }
+
+    public Cuenta getCuentaPorId(String idCuenta) {
+        for(Cuenta cuenta: cuentasAsociadas){
+            if(cuenta.getIdCuenta().equals(idCuenta)){
+                return cuenta;
+            }
+        }
+        return null;
+    }
+
+    public Categoria getCategoriaPorId(String idCategoria) {
+        for(Categoria categoria : categoriasAsociadas){
+            if(categoria.getIdCategoria().equals(idCategoria)){
+                return categoria;
+            }
+        }
+        return null;
+    }
+
+    public void setCategoriasAsociadas(LinkedList<Categoria> categoriasAsociadas) {
+        this.categoriasAsociadas = categoriasAsociadas;
+    }
 }
