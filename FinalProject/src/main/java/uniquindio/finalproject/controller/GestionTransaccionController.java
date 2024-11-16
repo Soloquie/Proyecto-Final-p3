@@ -13,10 +13,14 @@ import uniquindio.finalproject.Model.Transaccion;
 import uniquindio.finalproject.Model.TipoTransaccion;
 import uniquindio.finalproject.Model.Cuenta;
 import uniquindio.finalproject.Model.Categoria;
+import uniquindio.finalproject.exceptions.CuentaNoAsociadaException;
+import uniquindio.finalproject.exceptions.MontoInvalidoException;
 import uniquindio.finalproject.global.SesionGlobal;
 
 import java.io.IOException;
 import java.time.LocalDate;
+
+import static uniquindio.finalproject.global.SesionGlobal.usuarioActual;
 
 public class GestionTransaccionController {
 
@@ -83,35 +87,68 @@ public class GestionTransaccionController {
     // Método para enviar (crear) una nueva transacción
     @FXML
     void ClickEnviarDinero(ActionEvent event) {
-        String idTransaccion = txtIdTransaccion.getText();
-        LocalDate fecha = txtFecha.getValue();
-        String tipoTransaccionStr = btnTipoTransaccion.getText();
-        Double monto = Double.parseDouble(txtMonto.getText());
-        String descripcion = txtDescripcionTransaccion.getText();
-        String idCuentaOrigen = txtIdCuentaOrigen.getText();
-        String idCuentaDestino = txtIdCuenta.getText();
-        String idCategoria = txtIdCategoria.getText();
-        if (idTransaccion.isEmpty() || tipoTransaccionStr.equals("Seleccione tipo de transacción") || monto <= 0) {
-            mostrarMensaje("Error", "Campos Vacíos", "Por favor llene todos los campos correctamente", Alert.AlertType.ERROR);
-            return;
-        }
-        Cuenta cuentaOrigen = SesionGlobal.usuarioActual.getCuentaPorId(idCuentaOrigen);
-        Cuenta cuentaDestino = SesionGlobal.usuarioActual.getCuentaPorId(idCuentaDestino);
-        Categoria categoria = SesionGlobal.usuarioActual.getCategoriaPorId(idCategoria);
-        if (cuentaOrigen == null || cuentaDestino == null || categoria == null) {
-            mostrarMensaje("Error", "Datos incorrectos", "Revise los IDs de las cuentas o categoría", Alert.AlertType.ERROR);
-            return;
-        }
-        TipoTransaccion tipoTransaccion = TipoTransaccion.valueOf(tipoTransaccionStr);
-        Transaccion nuevaTransaccion = new Transaccion(idTransaccion, fecha, tipoTransaccion, monto, descripcion, cuentaOrigen, cuentaDestino, categoria);
-        SesionGlobal.usuarioActual.añadirTransaccion(nuevaTransaccion); // Añadir transacción al usuario
 
-        limpiarCampos();
-        mostrarMensaje("Éxito", "Transacción Enviada", "La transacción ha sido registrada correctamente", Alert.AlertType.INFORMATION);
+        try {
+            // Obtención de datos de los campos
+            String idTransaccion = txtIdTransaccion.getText();
+            LocalDate fecha = txtFecha.getValue();
+            String tipoTransaccionStr = btnTipoTransaccion.getText();
+            String descripcion = txtDescripcionTransaccion.getText();
+            String idCuentaOrigen = txtIdCuentaOrigen.getText();
+            String idCuentaDestino = txtIdCuenta.getText();
+            String idCategoria = txtIdCategoria.getText();
+
+            // Validación de campos vacíos
+            if (idTransaccion.isEmpty() || tipoTransaccionStr.equals("Seleccione tipo de transacción") || descripcion.isEmpty()) {
+                mostrarMensaje("Error", "Campos Vacíos", "Por favor llene todos los campos correctamente", Alert.AlertType.ERROR);
+                return;
+            }
+
+            // Validación del monto
+            Double monto;
+            try {
+                monto = Double.parseDouble(txtMonto.getText());
+            } catch (NumberFormatException e) {
+                throw new MontoInvalidoException("El monto debe ser un número válido.");
+            }
+
+            if (monto <= 0) {
+                throw new MontoInvalidoException("El monto ingresado no es válido. Debe ser mayor a 0.");
+            }
+
+            // Validación de cuentas asociadas
+            Cuenta cuentaOrigen = usuarioActual.getCuentaPorId(idCuentaOrigen);
+            Cuenta cuentaDestino = usuarioActual.getCuentaPorId(idCuentaDestino);
+
+            if (cuentaOrigen == null || !usuarioActual.getCuentasAsociadas().contains(cuentaOrigen)) {
+                throw new CuentaNoAsociadaException("La cuenta origen con ID " + idCuentaOrigen + " no está asociada al usuario actual.");
+            }
+
+            if (cuentaDestino == null || !usuarioActual.getCuentasAsociadas().contains(cuentaDestino)) {
+                throw new CuentaNoAsociadaException("La cuenta destino con ID " + idCuentaDestino + " no está asociada al usuario actual.");
+            }
+
+            // Crear la transacción
+            TipoTransaccion tipoTransaccion = TipoTransaccion.valueOf(tipoTransaccionStr);
+            Categoria categoria = usuarioActual.getCategoriaPorId(idCategoria);
+            Transaccion nuevaTransaccion = new Transaccion(idTransaccion, fecha, tipoTransaccion, monto, descripcion, cuentaOrigen, cuentaDestino, categoria);
+
+            // Añadir la transacción al usuario
+            usuarioActual.añadirTransaccion(nuevaTransaccion);
+
+            // Limpiar campos y mostrar mensaje de éxito
+            limpiarCampos();
+            mostrarMensaje("Éxito", "Transacción Enviada", "La transacción ha sido registrada correctamente", Alert.AlertType.INFORMATION);
+
+        } catch (MontoInvalidoException e) {
+            mostrarMensaje("Error", "Monto Inválido", e.getMessage(), Alert.AlertType.ERROR);
+        } catch (CuentaNoAsociadaException e) {
+            mostrarMensaje("Error", "Cuenta No Asociada", e.getMessage(), Alert.AlertType.ERROR);
+        } catch (Exception e) {
+            mostrarMensaje("Error", "Error inesperado", "Ocurrió un error al procesar la transacción.", Alert.AlertType.ERROR);
+            e.printStackTrace();
+        }
     }
-
-
-
 
     // Método para limpiar los campos de texto
     private void limpiarCampos() {

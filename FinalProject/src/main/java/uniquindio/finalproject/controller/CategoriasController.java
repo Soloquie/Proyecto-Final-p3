@@ -12,6 +12,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import uniquindio.finalproject.Model.Categoria;
+import uniquindio.finalproject.exceptions.CategoriaDuplicadaException;
 import uniquindio.finalproject.global.SesionGlobal;
 
 import java.io.IOException;
@@ -69,17 +70,42 @@ public class CategoriasController {
 
     @FXML
     void ClickGuardar(ActionEvent event) {
-        String id = txtIDCategoria.getText();
-        String nombre = txtNombreCategoria.getText();
-        String descripcion = txtDescripcion.getText();
-        if (id.isEmpty() || nombre.isEmpty() || descripcion.isEmpty()) {
-            mostrarMensaje("Error", "Campos Vacíos", "Por favor llene todos los campos", Alert.AlertType.ERROR);
-            return;
+        try {
+            // Obtener los datos del formulario
+            String id = txtIDCategoria.getText();
+            String nombre = txtNombreCategoria.getText();
+            String descripcion = txtDescripcion.getText();
+
+            // Validar campos vacíos
+            if (id.isEmpty() || nombre.isEmpty() || descripcion.isEmpty()) {
+                mostrarMensaje("Error", "Campos Vacíos", "Por favor llene todos los campos", Alert.AlertType.ERROR);
+                return;
+            }
+
+            // Validar si la categoría ya existe
+            if (SesionGlobal.usuarioActual.getCategoriasAsociadas().stream().anyMatch(c -> c.getNombreCategoria().equalsIgnoreCase(nombre))) {
+                throw new CategoriaDuplicadaException("La categoría con nombre '" + nombre + "' ya existe.");
+            }
+
+            // Crear la nueva categoría y añadirla al usuario
+            Categoria nuevaCategoria = new Categoria(id, nombre, descripcion);
+            SesionGlobal.usuarioActual.añadirCategoria(nuevaCategoria);
+
+            // Actualizar la tabla y limpiar campos
+            actualizarTabla();
+            limpiarCampos();
+
+            // Mostrar mensaje de éxito
+            mostrarMensaje("Éxito", "Categoría Agregada", "La categoría '" + nombre + "' se ha agregado correctamente.", Alert.AlertType.INFORMATION);
+
+        } catch (CategoriaDuplicadaException e) {
+            // Manejo de excepción de categoría duplicada
+            mostrarMensaje("Error", "Categoría Duplicada", e.getMessage(), Alert.AlertType.ERROR);
+        } catch (Exception e) {
+            // Manejo genérico de excepciones
+            mostrarMensaje("Error", "Error inesperado", "Ocurrió un error al guardar la categoría.", Alert.AlertType.ERROR);
+            e.printStackTrace();
         }
-        Categoria nuevaCategoria = new Categoria(id, nombre, descripcion);
-        SesionGlobal.usuarioActual.añadirCategoria(nuevaCategoria);
-        actualizarTabla();
-        limpiarCampos();
     }
 
     @FXML

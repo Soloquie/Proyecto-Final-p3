@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import uniquindio.finalproject.Model.Categoria;
 import uniquindio.finalproject.Model.Presupuesto;
 import uniquindio.finalproject.Model.Usuario;
+import uniquindio.finalproject.exceptions.PresupuestoDuplicadoException;
 import uniquindio.finalproject.global.SesionGlobal;
 
 import java.io.IOException;
@@ -108,21 +109,49 @@ public class PresupuestosController implements Initializable {
 
     @FXML
     void ClickGuardar(ActionEvent event) {
-        String idPresupuesto = txtIDPresupuesto.getText();
-        String nombrePresupuesto = txtNombrePresupuesto.getText();
-        Double montoTotal = Double.parseDouble(txtMontoTotal.getText());
-        Double montoGastado = Double.parseDouble(txtMontoGastado.getText());
-        String idCategoria = txtIDCategoria.getText();
-        String nombreCategoria = txtNombreCategoria.getText();
-        String descripcionCategoria = txtDescripcionCategoria.getText();
+        try {
+            // Obtener datos del formulario
+            String idPresupuesto = txtIDPresupuesto.getText();
+            String nombrePresupuesto = txtNombrePresupuesto.getText();
+            Double montoTotal = Double.parseDouble(txtMontoTotal.getText());
+            Double montoGastado = Double.parseDouble(txtMontoGastado.getText());
+            String idCategoria = txtIDCategoria.getText();
+            String nombreCategoria = txtNombreCategoria.getText();
+            String descripcionCategoria = txtDescripcionCategoria.getText();
 
-        Categoria categoria = new Categoria(idCategoria, nombreCategoria, descripcionCategoria);
-        Presupuesto nuevoPresupuesto = new Presupuesto(idPresupuesto, nombrePresupuesto, montoTotal, montoGastado, categoria);
-        SesionGlobal.usuarioActual.añadirPresupuesto(nuevoPresupuesto);
-        colPresupuesto.setItems(FXCollections.observableArrayList(SesionGlobal.usuarioActual.getPresupuestos()));
+            // Validar si el ID del presupuesto ya existe
+            if (SesionGlobal.usuarioActual.getPresupuestos().stream()
+                    .anyMatch(p -> p.getIdPresupuesto().equalsIgnoreCase(idPresupuesto))) {
+                throw new PresupuestoDuplicadoException("El presupuesto con ID '" + idPresupuesto + "' ya existe.");
+            }
 
-        limpiarCampos();
+            // Crear la categoría asociada
+            Categoria categoria = new Categoria(idCategoria, nombreCategoria, descripcionCategoria);
 
+            // Crear y añadir el nuevo presupuesto
+            Presupuesto nuevoPresupuesto = new Presupuesto(idPresupuesto, nombrePresupuesto, montoTotal, montoGastado, categoria);
+            SesionGlobal.usuarioActual.añadirPresupuesto(nuevoPresupuesto);
+
+            // Actualizar la tabla de presupuestos
+            colPresupuesto.setItems(FXCollections.observableArrayList(SesionGlobal.usuarioActual.getPresupuestos()));
+
+            // Limpiar campos
+            limpiarCampos();
+
+            // Mostrar mensaje de éxito
+            mostrarMensaje("Éxito", "Presupuesto Agregado", "El presupuesto se ha agregado correctamente.", Alert.AlertType.INFORMATION);
+
+        } catch (PresupuestoDuplicadoException e) {
+            // Manejo de excepción de presupuesto duplicado
+            mostrarMensaje("Error", "Presupuesto Duplicado", e.getMessage(), Alert.AlertType.ERROR);
+        } catch (NumberFormatException e) {
+            // Manejo de excepción de formato incorrecto
+            mostrarMensaje("Error", "Formato Incorrecto", "El monto total y el monto gastado deben ser números válidos.", Alert.AlertType.ERROR);
+        } catch (Exception e) {
+            // Manejo genérico de excepciones
+            mostrarMensaje("Error", "Error inesperado", "Ocurrió un error al guardar el presupuesto.", Alert.AlertType.ERROR);
+            e.printStackTrace();
+        }
     }
 
     @FXML
