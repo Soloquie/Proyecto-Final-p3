@@ -12,6 +12,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import uniquindio.finalproject.Model.Cuenta;
 import uniquindio.finalproject.Model.TipoCuenta;
+import uniquindio.finalproject.exceptions.CuentaNoEncontradaException;
 import uniquindio.finalproject.global.SesionGlobal;
 
 import java.io.IOException;
@@ -115,13 +116,36 @@ public class GestionCuentasController {
 
     @FXML
     void ClickEliminar(ActionEvent event) {
-        Cuenta cuentaSeleccionada = TablaCuentasUsuario.getSelectionModel().getSelectedItem();
-        if (cuentaSeleccionada != null) {
+        try {
+            // Obtener la cuenta seleccionada de la tabla
+            Cuenta cuentaSeleccionada = TablaCuentasUsuario.getSelectionModel().getSelectedItem();
+
+            // Validar si la cuenta seleccionada no es nula
+            if (cuentaSeleccionada == null) {
+                throw new CuentaNoEncontradaException("No se ha seleccionado ninguna cuenta para eliminar.");
+            }
+
+            // Verificar si la cuenta existe en las cuentas asociadas del usuario actual
+            if (!SesionGlobal.usuarioActual.getCuentasAsociadas().contains(cuentaSeleccionada)) {
+                throw new CuentaNoEncontradaException("La cuenta seleccionada no existe en las cuentas asociadas del usuario.");
+            }
+
+            // Eliminar la cuenta de las cuentas asociadas del usuario
             SesionGlobal.usuarioActual.getCuentasAsociadas().remove(cuentaSeleccionada);
+
+            // Actualizar la tabla y limpiar campos
             actualizarTabla();
             limpiarCampos();
-        } else {
-            mostrarMensaje("Advertencia", "Eliminación Fallida", "No se ha seleccionado ninguna cuenta para eliminar", Alert.AlertType.WARNING);
+
+            // Mostrar mensaje de éxito
+            mostrarMensaje("Éxito", "Cuenta Eliminada", "La cuenta ha sido eliminada correctamente", Alert.AlertType.INFORMATION);
+        } catch (CuentaNoEncontradaException e) {
+            // Manejo de la excepción y mostrar un mensaje de advertencia
+            mostrarMensaje("Advertencia", "Eliminación Fallida", e.getMessage(), Alert.AlertType.WARNING);
+        } catch (Exception e) {
+            // Manejo genérico de errores
+            mostrarMensaje("Error", "Error inesperado", "Ocurrió un error al intentar eliminar la cuenta.", Alert.AlertType.ERROR);
+            e.printStackTrace();
         }
     }
 

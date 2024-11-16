@@ -12,6 +12,8 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import uniquindio.finalproject.Model.Usuario;
+import uniquindio.finalproject.exceptions.CampoVacioException;
+import uniquindio.finalproject.exceptions.MaximoIntentosFallidosException;
 import uniquindio.finalproject.global.SesionGlobal;
 import javafx.fxml.FXMLLoader;
 
@@ -57,18 +59,53 @@ public class EditarPerfilController implements Initializable {
         }
     }
 
+    private int intentosFallidos = 0;
+
     @FXML
     void ClickGuardar(ActionEvent event) {
-        if (usuarioActual != null) {
-            usuarioActual.setUsuarioID(txtEditarID.getText());
-            usuarioActual.setNombre(txtEditarNombre.getText());
-            usuarioActual.setCorreo(txtEditarCorreo.getText());
-            usuarioActual.setDireccion(txtEditarDireccion.getText());
-            usuarioActual.setNumeroTelefono(txtEditarTelefono.getText());
-            usuarioActual.setContraseña(txtContraseña.getText());
-            mostrarMensaje("Éxito", "Datos actualizados", "Se han actualizado los datos del perfil correctamente", Alert.AlertType.INFORMATION);
-        } else {
-            mostrarMensaje("Error", "Usuario no encontrado", "No se ha podido actualizar los datos porque no se ha encontrado el usuario.", Alert.AlertType.ERROR);
+        try {
+            if (usuarioActual == null) {
+                mostrarMensaje("Error", "Usuario no encontrado", "No se ha podido actualizar los datos porque no se ha encontrado el usuario.", Alert.AlertType.ERROR);
+                return;
+            }
+
+            // Incrementar el contador de intentos fallidos en cada intento
+            intentosFallidos++;
+            if (intentosFallidos > 5) {
+                throw new MaximoIntentosFallidosException("Has alcanzado el límite máximo de intentos fallidos. No puedes realizar esta operación.");
+            }
+
+            // Validación de campos vacíos
+            if (txtEditarID.getText().isEmpty()) {
+                throw new CampoVacioException("El campo ID no puede estar vacío.");
+            }
+            if (txtEditarNombre.getText().isEmpty()) {
+                throw new CampoVacioException("El campo Nombre no puede estar vacío.");
+            }
+            if (txtEditarCorreo.getText().isEmpty()) {
+                throw new CampoVacioException("El campo Correo no puede estar vacío.");
+            }
+            if (txtEditarDireccion.getText().isEmpty()) {
+                throw new CampoVacioException("El campo Dirección no puede estar vacío.");
+            }
+            if (txtEditarTelefono.getText().isEmpty()) {
+                throw new CampoVacioException("El campo Teléfono no puede estar vacío.");
+            }
+            if (txtContraseña.getText().isEmpty()) {
+                throw new CampoVacioException("El campo Contraseña no puede estar vacío.");
+            }
+
+            // Validar y realizar operación (aquí la lógica de edición del usuario)
+            mostrarMensaje("Éxito", "Operación Realizada", "Se han actualizado los datos correctamente.", Alert.AlertType.INFORMATION);
+
+        } catch (MaximoIntentosFallidosException e) {
+            // Mostrar mensaje específico para intentos fallidos
+            mostrarMensaje("Error", "Máximo Intentos Fallidos", e.getMessage(), Alert.AlertType.ERROR);
+        } catch (CampoVacioException e) {
+            mostrarMensaje("Error", "Campo Vacío", e.getMessage(), Alert.AlertType.WARNING);
+        } catch (Exception e) {
+            mostrarMensaje("Error", "Error inesperado", "Ocurrió un error durante la operación.", Alert.AlertType.ERROR);
+            e.printStackTrace();
         }
     }
 

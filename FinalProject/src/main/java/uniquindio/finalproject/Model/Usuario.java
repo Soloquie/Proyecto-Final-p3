@@ -17,6 +17,7 @@ public class Usuario implements Serializable {
     private LinkedList<Presupuesto> presupuestos;
     private LinkedList<Categoria> categoriasAsociadas;
 
+
     public String getContraseña() {
         return contraseña;
     }
@@ -154,4 +155,5 @@ public class Usuario implements Serializable {
     public void setCategoriasAsociadas(LinkedList<Categoria> categoriasAsociadas) {
         this.categoriasAsociadas = categoriasAsociadas;
     }
+
 }
