@@ -13,7 +13,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uniquindio.finalproject.controller.ControllerGestionUsuario">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uniquindio.finalproject.view.GestionUsuarioViewController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="55.0" layoutY="-7.0" stroke="BLACK" strokeType="INSIDE" width="1000.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" height="25.0" layoutX="56.0" layoutY="11.0" stroke="BLACK" strokeType="INSIDE" width="929.0">

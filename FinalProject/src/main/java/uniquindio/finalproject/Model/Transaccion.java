@@ -1,8 +1,10 @@
 package uniquindio.finalproject.Model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Transaccion {
+public class Transaccion implements Serializable {
+    private static final long serialVersionUID = 1L;
     private Usuario usuario;
     private String idTransaccion;
     private LocalDate fecha;
@@ -13,7 +15,8 @@ public class Transaccion {
     private Cuenta cuentaDestino;
     private Categoria categoria;
 
-    public Transaccion(String idTransaccion, LocalDate fecha, TipoTransaccion tipoTransaccion, Double monto, String descripcion, Cuenta cuentaOrigen, Cuenta cuentaDestino, Categoria categoria) {
+    public Transaccion(Usuario usuario, String idTransaccion, LocalDate fecha, TipoTransaccion tipoTransaccion, Double monto, String descripcion, Cuenta cuentaOrigen, Cuenta cuentaDestino, Categoria categoria) {
+        this.usuario = usuario;
         this.idTransaccion = idTransaccion;
         this.fecha = fecha;
         this.tipoTransaccion = tipoTransaccion;

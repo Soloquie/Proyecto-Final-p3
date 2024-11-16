@@ -1,6 +1,9 @@
 package uniquindio.finalproject.Model;
 
-public class Presupuesto {
+import java.io.Serializable;
+
+public class Presupuesto implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String idPresupuesto;
     private String nombre;
     private Double montoTotal;

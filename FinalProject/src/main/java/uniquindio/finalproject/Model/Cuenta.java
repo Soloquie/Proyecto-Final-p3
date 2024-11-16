@@ -1,6 +1,9 @@
 package uniquindio.finalproject.Model;
 
-public class Cuenta {
+import java.io.Serializable;
+
+public class Cuenta implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String idCuenta;
     private String nombreBanco;
     private String numeroCuenta;

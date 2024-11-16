@@ -16,7 +16,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uniquindio.finalproject.controller.GestionTransaccionController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uniquindio.finalproject.view.GestionTransaccionController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="529.0" layoutX="243.0" layoutY="64.0" stroke="BLACK" strokeType="INSIDE" width="743.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="306.0" layoutX="270.0" layoutY="263.0" stroke="BLACK" strokeType="INSIDE" width="393.0" />
