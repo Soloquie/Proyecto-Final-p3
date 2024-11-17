@@ -1,9 +1,3 @@
-<<<<<<< Updated upstream:FinalProject/src/main/java/uniquindio/finalproject/persistencia/Persistencia.java
-package uniquindio.finalproject.persistencia;
-
-public class Persistencia {
-}
-=======
 package uniquindio.finalproject.persistencia;
 
 import uniquindio.finalproject.Model.*;
@@ -26,7 +20,7 @@ public class Persistencia extends Thread{
         String rutaArchivo = "";
         try {
             // Cargar el archivo de propiedades
-            properties.load(new FileInputStream("C:\\Users\\ACER\\Documents\\Programacion III\\Proyecto-Final-p3-main\\Proyecto-Final-p3-main (1)\\Proyecto-Final-p3-main\\FinalProject\\src\\main\\java\\uniquindio\\finalproject\\rutasProperties.txt"));
+            properties.load(new FileInputStream("C:\\Users\\ACER\\Documents\\Programacion III\\Proyecto-Final-p3-main (1) - copia\\Proyecto-Final-p3-main (1)\\Proyecto-Final-p3-main\\FinalProject\\src\\main\\java\\uniquindio\\finalproject\\rutasProperties.txt"));
 
             // Obtener la ruta según la propiedad solicitada (cuenta, categoría o presupuesto)
             rutaArchivo = properties.getProperty(propiedad);
@@ -235,4 +229,3 @@ public class Persistencia extends Thread{
         }
     }
 }
->>>>>>> Stashed changes:Proyecto-Final-p3-main (1)/Proyecto-Final-p3-main/FinalProject/src/main/java/uniquindio/finalproject/persistencia/Persistencia.java

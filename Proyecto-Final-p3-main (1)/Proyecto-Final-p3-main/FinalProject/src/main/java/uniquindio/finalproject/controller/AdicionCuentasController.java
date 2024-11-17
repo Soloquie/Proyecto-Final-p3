@@ -3,6 +3,8 @@ package uniquindio.finalproject.controller;
 import uniquindio.finalproject.Model.Cuenta;
 import uniquindio.finalproject.Model.TipoCuenta;
 import uniquindio.finalproject.Model.Usuario;
+import uniquindio.finalproject.mapping.dto.CuentaDto;
+import uniquindio.finalproject.mapping.dto.UsuarioDto;
 
 import java.io.*;
 import java.net.Socket;
@@ -46,14 +48,14 @@ public class AdicionCuentasController {
 
         try {
             TipoCuenta tipoCuenta = TipoCuenta.valueOf(tipoCuentaStr);
-            Cuenta nuevaCuenta = new Cuenta(idCuenta, nombreBanco, numeroCuenta, tipoCuenta, usuario, saldo);
+            CuentaDto nuevaCuenta = new CuentaDto(idCuenta, nombreBanco, numeroCuenta, tipoCuenta, usuario, saldo);
             return enviarCuentaAlServidor(nuevaCuenta);
         } catch (IllegalArgumentException e) {
             return false;
         }
     }
 
-    private boolean enviarCuentaAlServidor(Cuenta cuenta) {
+    private boolean enviarCuentaAlServidor(CuentaDto cuenta) {
         try (Socket socket = new Socket(SERVER_HOST, SERVER_PORT);
              ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
              ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream())) {

@@ -28,6 +28,10 @@ public class CuentaUsuarioController {
         this.usuario = usuario;
     }
 
+    public UsuarioDto getUsuarioActual(){
+        return usuario;
+    }
+
     public List<CuentaDto> cargarCuentasUsuario(CuentaUsuarioViewController viewController) {
         viewController.mostrarSaldoUsuario(usuario.saldoTotal());
         return obtenerCuentasUsuario();
@@ -75,10 +79,9 @@ public class CuentaUsuarioController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(vista));
             Parent root = loader.load();
-            if(usuario!=null) {
-                GestionCuentasViewController controller = loader.getController();
-                controller.setUsuarioActual(usuario);  // Establece el usuario actual aquí
-            }
+            GestionCuentasViewController controller = loader.getController();
+            controller.setUsuarioActual(usuario);  // Establece el usuario actual aquí
+
             // Ahora que el usuario se ha establecido, puedes cargar la tabla de cuentas
             Stage newStage = new Stage();
             newStage.setTitle("Nueva Ventana");
@@ -94,9 +97,6 @@ public class CuentaUsuarioController {
 
 
 
-    public void abrirVistaCuentasUsuario(ActionEvent event) {
-        abrirVista1("/uniquindio/finalproject/VistaGestionDeCuentas.fxml", event, usuario);
-    }
 
     public void abrirVistaTransaccionesUsuario(ActionEvent event) {
         abrirVista("/uniquindio/finalproject/VistaGestionDeTransacciones.fxml", event);

@@ -12,6 +12,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import uniquindio.finalproject.Model.Usuario;
 import uniquindio.finalproject.controller.AdicionCuentasController;
+import uniquindio.finalproject.mapping.dto.UsuarioDto;
 
 import java.io.IOException;
 import java.util.List;

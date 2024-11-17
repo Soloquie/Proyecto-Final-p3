@@ -12,9 +12,9 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import uniquindio.finalproject.controller.CuentaUsuarioController;
-import uniquindio.finalproject.controller.GestionCuentasController;
 import uniquindio.finalproject.mapping.dto.CuentaDto;
 import uniquindio.finalproject.mapping.dto.UsuarioDto;
 
@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class CuentaUsuarioViewController implements Initializable {
+
+
 
     @FXML
     private TableView<CuentaDto> tablaCuentasUsuario;
@@ -45,11 +47,10 @@ public class CuentaUsuarioViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Configurar columnas de la tabla sin cargar datos
-        colIdCuentaUsuario.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().idCuenta()));
-        colNombreBancoCuentaUsuario.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().nombreBanco()));
-        colNumeroCuentaUsuario.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().numeroCuenta()));
-        colSaldoCuentaUsuario.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().saldo()).asObject());
-
+        colIdCuentaUsuario.setCellValueFactory(new PropertyValueFactory<>("idCuenta"));
+        colNombreBancoCuentaUsuario.setCellValueFactory(new PropertyValueFactory<>("nombreBanco"));
+        colNumeroCuentaUsuario.setCellValueFactory(new PropertyValueFactory<>("numeroCuenta"));
+        colSaldoCuentaUsuario.setCellValueFactory(new PropertyValueFactory<>("saldo"));
 
 
         // Solo cargar datos si el controlador está inicializado
@@ -91,10 +92,30 @@ public class CuentaUsuarioViewController implements Initializable {
         return cuentaUsuarioController.cargarCuentasUsuario(this);
     }
 
+    private void abrirVista1(String vista, ActionEvent event, UsuarioDto usuario) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(vista));
+            Parent root = loader.load();
+            GestionCuentasViewController controller = loader.getController();
+            controller.setUsuarioActual(usuario);  // Establece el usuario actual aquí
+
+            // Ahora que el usuario se ha establecido, puedes cargar la tabla de cuentas
+            Stage newStage = new Stage();
+            newStage.setTitle("Nueva Ventana");
+            newStage.setScene(new Scene(root));
+            newStage.show();
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            currentStage.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     @FXML
     public void clickCuentasUsuario(ActionEvent event) {
-        cuentaUsuarioController.abrirVistaCuentasUsuario(event);
+        abrirVista1("/uniquindio/finalproject/VistaGestionDeCuentas.fxml", event, cuentaUsuarioController.getUsuarioActual());
+
     }
 
     @FXML
@@ -109,7 +130,7 @@ public class CuentaUsuarioViewController implements Initializable {
 
     @FXML
     public void clickCerrarSesion(ActionEvent event) {
-        cuentaUsuarioController.cerrarSesion(event);
+        cerrarSesion(event);
     }
 
     @FXML
@@ -122,5 +143,24 @@ public class CuentaUsuarioViewController implements Initializable {
         cuentaUsuarioController.abrirVistaPresupuestosUsuario(event);
     }
 
+    public void cerrarSesion(ActionEvent event) {
+        abrirVista("/uniquindio/finalproject/VistaLogin.fxml", event);
+    }
+
+    private void abrirVista(String vista, ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(vista));
+            Parent root = loader.load();
+            Stage newStage = new Stage();
+            newStage.setTitle("Nueva Ventana");
+            newStage.setScene(new Scene(root));
+            newStage.show();
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            currentStage.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

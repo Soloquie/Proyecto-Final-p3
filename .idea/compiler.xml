@@ -6,8 +6,6 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-<<<<<<< Updated upstream
-=======
       </profile>
       <profile name="Annotation profile for FinalProject" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -17,7 +15,6 @@
           <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct-processor/1.5.5.Final/mapstruct-processor-1.5.5.Final.jar" />
           <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct/1.5.5.Final/mapstruct-1.5.5.Final.jar" />
         </processorPath>
->>>>>>> Stashed changes
         <module name="FinalProject" />
       </profile>
     </annotationProcessing>

@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import uniquindio.finalproject.mapping.dto.AdministradorDto;
 import uniquindio.finalproject.mapping.dto.UsuarioDto;
@@ -50,7 +51,7 @@ public class LoginController {
 
             abrirVista(vista, event, "Cuenta de Usuario");
         } else {
-            mostrarMensaje("Error", "Credenciales incorrectas");
+            mostrarMensaje("Error", "Credenciales incorrectas", "Las credenciales que se han ingresado son incorrectas", Alert.AlertType.ERROR);
         }
     }
 
@@ -75,7 +76,11 @@ public class LoginController {
         }
     }
 
-    private void mostrarMensaje(String titulo, String mensaje) {
-        // Código para mostrar mensajes de error o confirmación
+    private void mostrarMensaje(String titulo, String encabezado, String contenido, Alert.AlertType tipo) {
+        Alert alerta = new Alert(tipo);
+        alerta.setTitle(titulo);
+        alerta.setHeaderText(encabezado);
+        alerta.setContentText(contenido);
+        alerta.showAndWait();
     }
 }

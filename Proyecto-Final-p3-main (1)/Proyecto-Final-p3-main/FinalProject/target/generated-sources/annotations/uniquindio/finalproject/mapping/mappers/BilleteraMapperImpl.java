@@ -21,7 +21,7 @@ import uniquindio.finalproject.mapping.dto.UsuarioDto;
 /*
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-11-17T10:23:52-0500",
+    date = "2024-11-17T10:49:32-0500",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 22.0.2 (Oracle Corporation)"
 )
 */

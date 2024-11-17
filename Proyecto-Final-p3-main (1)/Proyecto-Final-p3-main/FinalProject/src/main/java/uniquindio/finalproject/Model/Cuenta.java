@@ -1,51 +1,3 @@
-<<<<<<< Updated upstream:FinalProject/src/main/java/uniquindio/finalproject/Model/Cuenta.java
-package uniquindio.finalproject.Model;
-
-public class Cuenta {
-    private String idCuenta;
-    private String nombreBanco;
-    private String numeroCuenta;
-    private TipoCuenta tipoCuenta;
-
-    public Cuenta(String idCuenta, String nombreBanco, String numeroCuenta, TipoCuenta tipoCuenta) {
-        this.idCuenta = idCuenta;
-        this.nombreBanco = nombreBanco;
-        this.numeroCuenta = numeroCuenta;
-        this.tipoCuenta = tipoCuenta;
-    }
-
-    public String getIdCuenta() {
-        return idCuenta;
-    }
-
-    public void setIdCuenta(String idCuenta) {
-        this.idCuenta = idCuenta;
-    }
-
-    public String getNombreBanco() {
-        return nombreBanco;
-    }
-
-    public void setNombreBanco(String nombreBanco) {
-        this.nombreBanco = nombreBanco;
-    }
-
-    public String getNumeroCuenta() {
-        return numeroCuenta;
-    }
-
-    public void setNumeroCuenta(String numeroCuenta) {
-        this.numeroCuenta = numeroCuenta;
-    }
-
-    public TipoCuenta getTipoCuenta() {
-        return tipoCuenta;
-    }
-
-    public void setTipoCuenta(TipoCuenta tipoCuenta) {
-        this.tipoCuenta = tipoCuenta;
-    }
-=======
 package uniquindio.finalproject.Model;
 
 import java.io.Serializable;
@@ -129,5 +81,4 @@ public class Cuenta implements Serializable {
                 ", saldo=" + saldo +
                 '}';
     }
->>>>>>> Stashed changes:Proyecto-Final-p3-main (1)/Proyecto-Final-p3-main/FinalProject/src/main/java/uniquindio/finalproject/Model/Cuenta.java
 }

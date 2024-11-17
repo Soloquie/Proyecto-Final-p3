@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="btnAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uniquindio.finalproject.controller.EditarPerfilController">
+<AnchorPane fx:id="btnAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uniquindio.finalproject.view.EditarPerfilController">
    <children>
       <TextField fx:id="txtEditarNombre" layoutX="21.0" layoutY="224.0" prefHeight="25.0" prefWidth="340.0" promptText="Editar Nombre" />
       <TextField fx:id="txtEditarID" layoutX="21.0" layoutY="277.0" prefHeight="25.0" prefWidth="340.0" promptText="Editar ID" />

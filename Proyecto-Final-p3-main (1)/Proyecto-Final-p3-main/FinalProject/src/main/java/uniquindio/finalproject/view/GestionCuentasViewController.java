@@ -6,149 +6,106 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import uniquindio.finalproject.Model.TipoCuenta;
 import uniquindio.finalproject.controller.GestionCuentasController;
 import uniquindio.finalproject.mapping.dto.CuentaDto;
 import uniquindio.finalproject.mapping.dto.UsuarioDto;
+import uniquindio.finalproject.Model.TipoCuenta;
 
 import java.util.List;
 
 public class GestionCuentasViewController {
 
     @FXML
-    private TextField txtSaldoCuenta;
-    @FXML
-    private Button btnActualizar;
-    @FXML
-    private Button btnEliminar;
-    @FXML
-    private Button btnGuardar;
-    @FXML
-    private Button btnLimpiar;
-    @FXML
-    private MenuButton btnTipoDeCuenta;
-    @FXML
-    private TextField txtNombreBanco;
-    @FXML
-    private TextField txtNumeroCuenta;
-    @FXML
-    private TextField txtid;
+    private TextField txtBuscar, txtSaldoCuenta, txtid, txtNombreBanco, txtNumeroCuenta;
+
     @FXML
     private TableView<CuentaDto> TablaCuentasUsuario;
-    @FXML
-    private TableColumn<CuentaDto, String> colIdCuenta;
-    @FXML
-    private TableColumn<CuentaDto, String> colNombreBanco;
-    @FXML
-    private TableColumn<CuentaDto, String> colNumCuenta;
-    @FXML
-    private TableColumn<CuentaDto, String> colTipoCuenta;
 
-    private GestionCuentasController gestionCuentasController;
+    @FXML
+    private TableColumn<CuentaDto, String> colIdCuentaUsuario, colNombreBancoCuentaUsuario, colNumeroCuentaUsuario;
 
-    public GestionCuentasViewController() {
-        this.gestionCuentasController = new GestionCuentasController();
-    }
+    @FXML
+    private TableColumn<CuentaDto, String> colTipoCuentaUsuario;
+
+    @FXML
+    private MenuButton btnTipoDeCuenta;
+
+    @FXML
+    private Button btnGuardar, btnActualizar, btnEliminar, btnLimpiar;
+
+    private GestionCuentasController cuentaUsuarioController;
+    private TipoCuenta tipoCuentaSeleccionado;
 
     @FXML
     public void initialize() {
-        colIdCuenta.setCellValueFactory(new PropertyValueFactory<>("idCuenta"));
-        colNombreBanco.setCellValueFactory(new PropertyValueFactory<>("nombreBanco"));
-        colNumCuenta.setCellValueFactory(new PropertyValueFactory<>("numeroCuenta"));
-        colTipoCuenta.setCellValueFactory(new PropertyValueFactory<>("tipoCuenta"));
-        cargarTiposCuenta();
-        actualizarTabla();
-        TablaCuentasUsuario.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                mostrarInformacionCuenta(newValue);
-            }
-        });
-    }
+        colIdCuentaUsuario.setCellValueFactory(new PropertyValueFactory<>("idCuenta"));
+        colNombreBancoCuentaUsuario.setCellValueFactory(new PropertyValueFactory<>("nombreBanco"));
+        colNumeroCuentaUsuario.setCellValueFactory(new PropertyValueFactory<>("numeroCuenta"));
+        colTipoCuentaUsuario.setCellValueFactory(new PropertyValueFactory<>("tipoCuenta"));
 
-    public void setUsuarioActual(UsuarioDto usuario) {
-        gestionCuentasController.setUsuarioActual(usuario);
-        actualizarTabla();
-    }
-
-
-    @FXML
-    private void ClickGuardar(ActionEvent event) {
-        String idCuenta = txtid.getText();
-        String nombreBanco = txtNombreBanco.getText();
-        String numeroCuenta = txtNumeroCuenta.getText();
-        String tipoCuentaStr = btnTipoDeCuenta.getText();
-        double saldo = Double.parseDouble(txtSaldoCuenta.getText());
-
-        boolean guardado = gestionCuentasController.guardarCuenta(idCuenta, nombreBanco, numeroCuenta, tipoCuentaStr, saldo);
-        if (guardado) {
-            mostrarMensaje("Notificación", "Cuenta Guardada", "La cuenta ha sido guardada correctamente", Alert.AlertType.INFORMATION);
-            limpiarCampos();
-            actualizarTabla();
-        } else {
-            mostrarMensaje("Error", "Error al Guardar", "No se pudo guardar la cuenta. Verifique los datos.", Alert.AlertType.ERROR);
+        if (cuentaUsuarioController != null) {
+            cargarCuentasUsuario();
         }
-    }
 
-    private void cargarTiposCuenta() {
-        btnTipoDeCuenta.getItems().clear(); // Limpiar cualquier elemento previo
+        // Configurar opciones de tipo de cuenta en el menú
         for (TipoCuenta tipo : TipoCuenta.values()) {
-            MenuItem item = new MenuItem(tipo.name());
-            item.setOnAction(e -> btnTipoDeCuenta.setText(tipo.name()));
+            MenuItem item = new MenuItem(tipo.toString());
+            item.setOnAction(event -> {
+                tipoCuentaSeleccionado = tipo;
+                btnTipoDeCuenta.setText(tipo.toString());
+            });
             btnTipoDeCuenta.getItems().add(item);
         }
     }
 
+    public void setUsuarioActual(UsuarioDto usuario) {
+        this.cuentaUsuarioController = new GestionCuentasController(usuario);
+        cargarCuentasUsuario();
+    }
+
+    public void mostrarCuentasUsuario(List<CuentaDto> cuentas) {
+        TablaCuentasUsuario.setItems(FXCollections.observableArrayList(cuentas));
+    }
 
     @FXML
-    private void ClickActualizar(ActionEvent event) {
+    void ClickGuardar(ActionEvent event) {
+        cuentaUsuarioController.guardarCuenta(txtid.getText(), txtNombreBanco.getText(), txtNumeroCuenta.getText(), tipoCuentaSeleccionado, Double.valueOf(txtSaldoCuenta.getText()));
+        cargarCuentasUsuario();
+        limpiarCampos();
+    }
+
+    @FXML
+    void ClickActualizar(ActionEvent event) {
         CuentaDto cuentaSeleccionada = TablaCuentasUsuario.getSelectionModel().getSelectedItem();
-
         if (cuentaSeleccionada != null) {
-            // Crear una nueva cuenta con los valores actualizados
-            CuentaDto cuentaActualizada = new CuentaDto(
-                    txtid.getText(),
-                    txtNombreBanco.getText(),
-                    txtNumeroCuenta.getText(),
-                    TipoCuenta.valueOf(btnTipoDeCuenta.getText()),
-                    cuentaSeleccionada.usuario(), // Usuario original
-                    Double.parseDouble(txtSaldoCuenta.getText())
-            );
-
-            // Actualizar la cuenta en la fuente de datos
-            gestionCuentasController.actualizarCuenta(cuentaSeleccionada, cuentaActualizada);
-            actualizarTabla(); // Refrescar la tabla con los datos actualizados
+            cuentaUsuarioController.actualizarCuenta(cuentaSeleccionada.idCuenta(), txtid.getText(), txtNombreBanco.getText(), txtNumeroCuenta.getText(), tipoCuentaSeleccionado, Double.valueOf(txtSaldoCuenta.getText()));
+            cargarCuentasUsuario();
             limpiarCampos();
-
-            mostrarMensaje("Notificación", "Cuenta Actualizada", "La cuenta ha sido actualizada correctamente", Alert.AlertType.INFORMATION);
         } else {
             mostrarMensaje("Advertencia", "Actualización Fallida", "No se ha seleccionado ninguna cuenta para actualizar", Alert.AlertType.WARNING);
         }
     }
 
-
     @FXML
-    private void ClickEliminar(ActionEvent event) {
+    void ClickEliminar(ActionEvent event) {
         CuentaDto cuentaSeleccionada = TablaCuentasUsuario.getSelectionModel().getSelectedItem();
         if (cuentaSeleccionada != null) {
-            gestionCuentasController.eliminarCuenta(cuentaSeleccionada);
-            actualizarTabla();
+            cuentaUsuarioController.eliminarCuenta(cuentaSeleccionada.idCuenta());
+            cargarCuentasUsuario();
             limpiarCampos();
         } else {
             mostrarMensaje("Advertencia", "Eliminación Fallida", "No se ha seleccionado ninguna cuenta para eliminar", Alert.AlertType.WARNING);
         }
     }
 
-    public void actualizarTabla() {
-        List<CuentaDto> cuentas = gestionCuentasController.obtenerCuentasUsuario();
-        ObservableList<CuentaDto> cuentasDto = FXCollections.observableArrayList(cuentas);
-        TablaCuentasUsuario.setItems(cuentasDto);
+    @FXML
+    void ClickLimpiar(ActionEvent event) {
+        limpiarCampos();
     }
 
-    private void mostrarInformacionCuenta(CuentaDto cuenta) {
-        txtid.setText(cuenta.idCuenta());
-        txtNombreBanco.setText(cuenta.nombreBanco());
-        txtNumeroCuenta.setText(cuenta.numeroCuenta());
-        btnTipoDeCuenta.setText(String.valueOf(cuenta.tipoCuenta()));
+    private void cargarCuentasUsuario() {
+        List<CuentaDto> cuentas = cuentaUsuarioController.obtenerCuentasUsuario();
+        mostrarCuentasUsuario(cuentas);
     }
 
     private void limpiarCampos() {
@@ -156,6 +113,7 @@ public class GestionCuentasViewController {
         txtNombreBanco.clear();
         txtNumeroCuenta.clear();
         btnTipoDeCuenta.setText("Seleccione tipo de cuenta");
+        tipoCuentaSeleccionado = null;
     }
 
     private void mostrarMensaje(String titulo, String encabezado, String contenido, Alert.AlertType tipo) {
@@ -167,12 +125,7 @@ public class GestionCuentasViewController {
     }
 
     @FXML
-    public void ClickLimpiar(ActionEvent event) {
-        limpiarCampos();
-    }
-
-    @FXML
-    public void clickVolver(ActionEvent event) {
-        gestionCuentasController.volver(event);
+    void clickVolver(ActionEvent event) {
+        cuentaUsuarioController.volver(event);
     }
 }

@@ -19,6 +19,7 @@ import java.io.IOException;
 
 public class CategoriasController {
 
+    public Button BtbBack;
     @FXML
     private Button btnActualizar;
 
