@@ -1,3 +1,0 @@
-rutaArchivoCuenta = C:\\td\\Persistencia\\Archivos\\Cuenta.txt
-rutaArchivoCategoria = C:\\td\\Persistencia\\Archivos\\Categoria.txt
-rutaArchivoPresupuesto = C:\\td\\Persistencia\\Archivos\\Presupuesto.txt

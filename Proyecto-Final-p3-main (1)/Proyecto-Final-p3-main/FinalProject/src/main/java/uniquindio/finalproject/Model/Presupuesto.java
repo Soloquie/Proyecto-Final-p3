@@ -1,0 +1,157 @@
+<<<<<<< Updated upstream:FinalProject/src/main/java/uniquindio/finalproject/Model/Presupuesto.java
+package uniquindio.finalproject.Model;
+
+public class Presupuesto {
+    private String idPresupuesto;
+    private String nombre;
+    private Double montoTotal;
+    private Double montoGastado;
+    private Categoria categoria;
+
+    public Presupuesto(String idPresupuesto, String nombre, Double montoTotal, Double montoGastado, Categoria categoria) {
+        this.idPresupuesto = idPresupuesto;
+        this.nombre = nombre;
+        this.montoTotal = montoTotal;
+        this.montoGastado = montoGastado;
+        this.categoria = categoria;
+    }
+
+    public String getIdPresupuesto() {
+        return idPresupuesto;
+    }
+
+    public void setIdPresupuesto(String idPresupuesto) {
+        this.idPresupuesto = idPresupuesto;
+    }
+
+    public String getNombrePresupuesto() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public Double getMontoTotal() {
+        return montoTotal;
+    }
+
+    public void setMontoTotal(Double montoTotal) {
+        this.montoTotal = montoTotal;
+    }
+
+    public Double getMontoGastado() {
+        return montoGastado;
+    }
+
+    public void setMontoGastado(Double montoGastado) {
+        this.montoGastado = montoGastado;
+    }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
+
+    public String getNombreCategoria(){
+        return categoria.getNombreCategoria();
+    }
+
+    public String getIdCategoria(){
+        return categoria.getIdCategoria();
+    }
+
+    public String getDescripcionCategoria(){
+        return categoria.getDescripcionCategoria();
+    }
+}
+=======
+package uniquindio.finalproject.Model;
+
+import java.io.Serializable;
+
+public class Presupuesto implements Serializable {
+    private static final long serialVersionUID = 1L;
+    private String idPresupuesto;
+    private String nombre;
+    private Double montoTotal;
+    private Double montoGastado;
+    private Categoria categoria;
+
+    public Presupuesto(){}
+
+    public Presupuesto(String idPresupuesto, String nombre, Double montoTotal, Double montoGastado, Categoria categoria) {
+        this.idPresupuesto = idPresupuesto;
+        this.nombre = nombre;
+        this.montoTotal = montoTotal;
+        this.montoGastado = montoGastado;
+        this.categoria = categoria;
+    }
+
+    public String getIdPresupuesto() {
+        return idPresupuesto;
+    }
+
+    public void setIdPresupuesto(String idPresupuesto) {
+        this.idPresupuesto = idPresupuesto;
+    }
+
+    public String getNombrePresupuesto() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public Double getMontoTotal() {
+        return montoTotal;
+    }
+
+    public void setMontoTotal(Double montoTotal) {
+        this.montoTotal = montoTotal;
+    }
+
+    public Double getMontoGastado() {
+        return montoGastado;
+    }
+
+    public void setMontoGastado(Double montoGastado) {
+        this.montoGastado = montoGastado;
+    }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
+
+    public String getNombreCategoria(){
+        return categoria.getNombreCategoria();
+    }
+
+    public String getIdCategoria(){
+        return categoria.getIdCategoria();
+    }
+
+    public String getDescripcionCategoria(){
+        return categoria.getDescripcionCategoria();
+    }
+
+    @Override
+    public String toString() {
+        return "Presupuesto{" +
+                "idPresupuesto='" + idPresupuesto + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", montoTotal=" + montoTotal +
+                ", montoGastado=" + montoGastado +
+                ", categoria=" + categoria +
+                '}';
+    }
+}
+>>>>>>> Stashed changes:Proyecto-Final-p3-main (1)/Proyecto-Final-p3-main/FinalProject/src/main/java/uniquindio/finalproject/Model/Presupuesto.java
