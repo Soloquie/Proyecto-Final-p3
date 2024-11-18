@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uniquindio.finalproject.view.GestionUsuarioViewController">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="55.0" layoutY="-7.0" stroke="BLACK" strokeType="INSIDE" width="1000.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="25.0" layoutX="56.0" layoutY="11.0" stroke="BLACK" strokeType="INSIDE" width="929.0">
+         <fill>
+            <LinearGradient endX="0.37914691943127965" endY="0.2037914691943128" startX="0.5402843601895735" startY="0.6066350710900474">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.0660940557718277" green="0.40789473056793213" blue="0.10027412325143814" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.10588235408067703" green="0.250980406999588" blue="0.12156862765550613" />
+                     </color>
+                  </Stop>
+               </stops>
+            </LinearGradient>
+         </fill>
+      </Rectangle>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="543.0" layoutY="58.0" stroke="BLACK" strokeType="INSIDE" width="228.0">
+         <fill>
+            <LinearGradient endX="0.14218009478672985" endY="1.0" startX="0.49763033175355453" startY="0.4597156398104266">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.06666667014360428" green="0.40784314274787903" blue="0.10196078568696976" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.10588235408067703" green="0.250980406999588" blue="0.12156862765550613" />
+                     </color>
+                  </Stop>
+               </stops>
+            </LinearGradient>
+         </fill>
+      </Rectangle>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="525.0" layoutX="246.0" layoutY="58.0" stroke="BLACK" strokeType="INSIDE" width="741.0" />
+      <TableView fx:id="tableUsuarios" layoutX="271.0" layoutY="117.0" prefHeight="234.0" prefWidth="702.0">
+         <columns>
+            <TableColumn fx:id="colId" minWidth="15.0" prefWidth="104.79998779296875" text="IDENTIFICACION" />
+            <TableColumn fx:id="colNombre" minWidth="15.0" prefWidth="128.0" text="NOMBRE" />
+            <TableColumn fx:id="colCorreo" minWidth="15.0" prefWidth="149.5999755859375" text="CORREO" />
+            <TableColumn fx:id="colTelefono" minWidth="15.0" prefWidth="129.5999755859375" text="TELEFONO" />
+            <TableColumn fx:id="colDireccion" minWidth="15.0" prefWidth="105.60009765625" text="DIRECCION" />
+            <TableColumn fx:id="colSaldo" minWidth="15.0" prefWidth="103.9998779296875" text="SALDO" />
+         </columns>
+      </TableView>
+
+      <Label layoutX="66.0" layoutY="11.0" text="GESTION DE USUARIOS" textFill="WHITE">
+         <font>
+            <Font name="Tahoma" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="537.0" layoutY="372.0" text="Nombre">
+         <font>
+            <Font name="Tahoma" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="262.0" layoutY="416.0" prefHeight="19.0" prefWidth="58.0" text="Correo">
+         <font>
+            <Font name="Tahoma" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="535.0" layoutY="416.0" text="Teléfono">
+         <font>
+            <Font name="Tahoma" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="256.0" layoutY="462.0" prefHeight="21.0" prefWidth="70.0" text="Dirección">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtId" layoutX="333.0" layoutY="369.0" prefHeight="25.0" prefWidth="167.0" promptText="Ingresar identificación" />
+      <TextField fx:id="txtNombre" layoutX="622.0" layoutY="368.0" prefHeight="25.0" prefWidth="167.0" promptText="Ingresar nombre completo" />
+      <TextField fx:id="txtCorreo" layoutX="333.0" layoutY="413.0" prefHeight="25.0" prefWidth="167.0" promptText="Ingresar correo" />
+      <TextField fx:id="txtTelefono" layoutX="622.0" layoutY="413.0" prefHeight="25.0" prefWidth="167.0" promptText="Ingresar teléfono" />
+      <TextField fx:id="txtDireccion" layoutX="333.0" layoutY="460.0" prefHeight="25.0" prefWidth="167.0" promptText="Ingresar dirección" />
+      <TextField fx:id="txtBuscar" layoutX="271.0" layoutY="80.0" prefHeight="25.0" prefWidth="217.0" promptText="Buscar" />
+      <Button fx:id="btnEliminar" layoutX="857.0" layoutY="548.0" mnemonicParsing="false" onAction="#ClickEliminar" prefHeight="25.0" prefWidth="116.0" style="-fx-background-color: #611825;" text="Eliminar" textFill="#fcfcfc">
+         <font>
+            <Font name="Tahoma" size="13.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnLimpiar" layoutX="857.0" layoutY="515.0" mnemonicParsing="false" onAction="#ClickLimpiar" prefHeight="25.0" prefWidth="116.0" style="-fx-background-color: #11681a;" text="Limpiar" textFill="#f8f8f8">
+         <font>
+            <Font name="Tahoma" size="13.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnActualizar" layoutX="694.0" layoutY="513.0" mnemonicParsing="false" onAction="#ClickActualizar" prefHeight="25.0" prefWidth="116.0" style="-fx-background-color: #11681a;" text="Actualizar" textFill="WHITE">
+         <font>
+            <Font name="Tahoma" size="13.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnGuardar" layoutX="532.0" layoutY="513.0" mnemonicParsing="false" onAction="#ClickGuardar" prefHeight="25.0" prefWidth="116.0" style="-fx-background-color: #11681a;" text="Guardar" textFill="WHITE">
+         <font>
+            <Font name="Tahoma" size="13.0" />
+         </font>
+      </Button>
+      <Label layoutX="66.0" layoutY="300.0" text="Bienvenido" textFill="WHITE">
+         <font>
+            <Font name="Tahoma" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="96.0" layoutY="381.0" text="TAU" textFill="WHITE">
+         <font>
+            <Font name="Tahoma" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="263.0" layoutY="372.0" text="ID">
+         <font>
+            <Font name="Tahoma" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="256.0" layoutY="504.0" prefHeight="21.0" prefWidth="70.0" text="Saldo">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtSaldo" layoutX="333.0" layoutY="502.0" prefHeight="25.0" prefWidth="167.0" promptText="Ingresar el saldo" />
+      <Button fx:id="btnAgregarCuentas" layoutX="824.0" layoutY="407.0" mnemonicParsing="false" onAction="#ClickAgregarCuentas" prefHeight="25.0" prefWidth="149.0" style="-fx-background-color: #11681a;" text="Agregar Cuentas" textFill="WHITE">
+         <font>
+            <Font name="Tahoma" size="13.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnAgregarPresupuestos" layoutX="824.0" layoutY="373.0" mnemonicParsing="false" onAction="#ClickPresupuestos" prefHeight="21.0" prefWidth="149.0" style="-fx-background-color: #11681a;" text="Agregar presupuestos" textFill="WHITE">
+         <font>
+            <Font name="Tahoma" size="13.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnMostrarEstadisticas" layoutX="824.0" layoutY="80.0" mnemonicParsing="false" onAction="#clickMostrarEstadisticas" prefHeight="25.0" prefWidth="149.0" style="-fx-background-color: #11681a;" text="Mostrar Estadisticas" textFill="WHITE">
+         <font>
+            <Font name="Tahoma" size="13.0" />
+         </font>
+      </Button>
+      <Label layoutX="534.0" layoutY="463.0" text="Contraseña">
+         <font>
+            <Font name="Tahoma" size="15.0" />
+         </font>
+      </Label>
+      <PasswordField fx:id="txtContraseña" layoutX="620.0" layoutY="460.0" prefHeight="26.0" prefWidth="167.0" />
+      <Button layoutX="65.0" layoutY="491.0" mnemonicParsing="false" onAction="#clickCerrarSesion" prefHeight="26.0" prefWidth="97.0" text="Cerrar Sesion" />
+   </children>
+</AnchorPane>
