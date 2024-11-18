@@ -21,7 +21,7 @@ import uniquindio.finalproject.mapping.dto.UsuarioDto;
 /*
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-11-17T22:48:05-0500",
+    date = "2024-11-18T11:11:01-0500",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 22.0.2 (Oracle Corporation)"
 )
 */
@@ -215,15 +215,11 @@ public class BilleteraMapperImpl implements BilleteraMapper {
             return null;
         }
 
-        String contraseña = null;
-        String usuarioID = null;
+        Administrador administrador = new Administrador();
 
-        contraseña = administradorDto.contraseña();
-        usuarioID = administradorDto.usuarioID();
-
-        Administrador administrador = new Administrador( usuarioID, contraseña );
-
+        administrador.setContraseña( administradorDto.contraseña() );
         administrador.setSaldoTotal( administradorDto.saldoTotal() );
+        administrador.setUsuarioID( administradorDto.usuarioID() );
         administrador.setNombre( administradorDto.nombre() );
         administrador.setCorreo( administradorDto.correo() );
         administrador.setNumeroTelefono( administradorDto.numeroTelefono() );

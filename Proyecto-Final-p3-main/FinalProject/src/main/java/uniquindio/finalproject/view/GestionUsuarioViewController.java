@@ -18,6 +18,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import uniquindio.finalproject.controller.GestionUsuarioController;
 import uniquindio.finalproject.Model.Usuario;
 import uniquindio.finalproject.persistencia.Persistencia;
@@ -34,9 +39,12 @@ public class GestionUsuarioViewController implements Initializable {
 
     private final ObservableList<Usuario> listaUsuarios = FXCollections.observableArrayList();
     private final GestionUsuarioController usuarioController = new GestionUsuarioController();
+
     private Usuario usuarioSeleccionado;
     Persistencia persistencia = new Persistencia();
 
+    @FXML
+    public Button btnGenerarPDF;
     @FXML
     private TextField txtId, txtNombre, txtCorreo, txtTelefono, txtDireccion, txtSaldo;
     @FXML
@@ -241,4 +249,62 @@ public class GestionUsuarioViewController implements Initializable {
         persistencia.guardarRegistroLog("ClickCerrarSesion", 1,"[Administrador] Se paso a la escena Login");
         abrirVista("/uniquindio/finalproject/VistaLogin.fxml", event, "Adicion de Cuentas");
     }
+
+    @FXML
+    public void clickGenerarPDF(ActionEvent event) {
+        // Crear un documento PDF
+        persistencia.guardarRegistroLog("ClickGenerarPDF", 1, "Se ha generado un reporte en PDF de las estadisticas");
+        try (PDDocument document = new PDDocument()) {
+            // Crear una página
+            PDPage page = new PDPage(PDRectangle.A4);
+            document.addPage(page);
+
+            // Agregar contenido a la página
+            PDPageContentStream contentStream = new PDPageContentStream(document, page);
+
+            contentStream.setFont(PDType1Font.HELVETICA_BOLD, 20);
+            contentStream.beginText();
+            contentStream.setLeading(15f);
+            contentStream.newLineAtOffset(50, 750);
+            contentStream.showText("Reporte Financiero");
+            contentStream.newLine();
+
+            contentStream.setFont(PDType1Font.HELVETICA, 12);
+            contentStream.showText("Fecha: " + java.time.LocalDate.now());
+            contentStream.newLine();
+            contentStream.newLine();
+
+            // Agregar contenido dinámico (datos de los usuarios)
+            contentStream.showText("Usuarios:");
+            contentStream.newLine();
+            for (Usuario usuario : listaUsuarios) {
+                contentStream.showText("ID: " + usuario.getUsuarioID() + ", Nombre: " + usuario.getNombre()
+                        + ", Saldo: " + usuario.getSaldoTotal());
+                contentStream.newLine();
+            }
+
+            contentStream.newLine();
+            contentStream.showText("Saldo Promedio: " + String.format("%.2f", calcularSaldoPromedio()));
+            contentStream.newLine();
+
+            contentStream.endText();
+            contentStream.close();
+
+            // Guardar el documento
+            String filePath = "Reporte_Financiero_" + java.time.LocalDate.now() + ".pdf";
+            document.save(filePath);
+            mostrarMensaje("PDF Generado", "El reporte se ha guardado en: " + filePath, Alert.AlertType.INFORMATION);
+
+        } catch (IOException e) {
+            mostrarMensaje("Error", "No se pudo generar el PDF: " + e.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
+
+    private double calcularSaldoPromedio() {
+        return listaUsuarios.stream()
+                .mapToDouble(Usuario::getSaldoTotal)
+                .average()
+                .orElse(0.0);
+    }
+
 }

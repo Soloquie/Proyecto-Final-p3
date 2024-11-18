@@ -105,6 +105,11 @@
             <Font name="Tahoma" size="13.0" />
          </font>
       </Button>
+      <Button fx:id="btnGenerarPDF" layoutX="660.0" layoutY="80.0" mnemonicParsing="false" onAction="#clickGenerarPDF" prefHeight="25.0" prefWidth="149.0" style="-fx-background-color: #11681a;" text="Generar PDF" textFill="WHITE">
+         <font>
+            <Font name="Tahoma" size="13.0" />
+         </font>
+      </Button>
       <Button fx:id="btnActualizar" layoutX="694.0" layoutY="513.0" mnemonicParsing="false" onAction="#ClickActualizar" prefHeight="25.0" prefWidth="116.0" style="-fx-background-color: #11681a;" text="Actualizar" textFill="WHITE">
          <font>
             <Font name="Tahoma" size="13.0" />

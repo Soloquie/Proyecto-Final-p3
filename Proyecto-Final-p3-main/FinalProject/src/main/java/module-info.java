@@ -5,7 +5,7 @@ module uniquindio.finalproject {
     requires java.xml;
     requires java.desktop;
     requires org.mapstruct;
-
+    requires org.apache.pdfbox;
 
 
     opens uniquindio.finalproject to javafx.fxml;
